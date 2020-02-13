@@ -14,10 +14,10 @@ echo "Latest version always at https://github.com/TheRemote/MinecraftBedrockServ
 echo "Don't forget to set up port forwarding on your router!  The default port is 19132"
 
 # Function to read input from user with a prompt
-$ServerName = "BDS"
-$PortIPV4 = "19132"
-$PortIPV6 = "19133"
-$answer = "y"
+ServerName=BDS
+PortIPV4=19132
+PortIPV6=19133
+answer=y
 
 
 # Install dependencies required to run Minecraft server in the background
@@ -90,11 +90,11 @@ if [ -d "$ServerName" ]; then
 
   # Update minecraft server service
   echo "Configuring $ServerName service..."
-  sudo wget -O /etc/systemd/system/$ServerName.service https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/minecraftbe.service
-  sudo chmod +x /etc/systemd/system/$ServerName.service
-  sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/$ServerName.service
-  sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/$ServerName.service
-  sudo sed -i "s:servername:$ServerName:g" /etc/systemd/system/$ServerName.service
+  sudo wget -O /etc/init.d/$ServerName.service https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/minecraftbe.service
+  sudo chmod +x /etc/init.d/$ServerName.service
+  sudo sed -i "s/replace/$UserName/g" /etc/init.d/$ServerName.service
+  sudo sed -i "s:dirname:$DirName:g" /etc/init.d/$ServerName.service
+  sudo sed -i "s:servername:$ServerName:g" /etc/init.d/$ServerName.service
   sed -i "/server-port=/c\server-port=$PortIPV4" server.properties
   sed -i "/server-portv6=/c\server-portv6=$PortIPV6" server.properties
   sudo systemctl daemon-reload
@@ -214,11 +214,11 @@ sed -i "s:servername:$ServerName:g" restart.sh
 
 # Service configuration
 echo "Configuring Minecraft $ServerName service..."
-sudo wget -O /etc/systemd/system/$ServerName.service https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/minecraftbe.service
-sudo chmod +x /etc/systemd/system/$ServerName.service
-sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/$ServerName.service
-sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/$ServerName.service
-sudo sed -i "s:servername:$ServerName:g" /etc/systemd/system/$ServerName.service
+sudo wget -O /etc/init.d/$ServerName.service https://raw.githubusercontent.com/TheRemote/MinecraftBedrockServer/master/minecraftbe.service
+sudo chmod +x /etc/init.d/$ServerName.service
+sudo sed -i "s/replace/$UserName/g" /etc/init.d/$ServerName.service
+sudo sed -i "s:dirname:$DirName:g" /etc/init.d/$ServerName.service
+sudo sed -i "s:servername:$ServerName:g" /etc/init.d/$ServerName.service
 sed -i "/server-port=/c\server-port=$PortIPV4" server.properties
 sed -i "/server-portv6=/c\server-portv6=$PortIPV6" server.properties
 sudo systemctl daemon-reload
