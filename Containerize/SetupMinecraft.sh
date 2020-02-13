@@ -26,7 +26,7 @@ if [ ! -n "`which sudo`" ]; then
   apt-get update && apt-get install sudo -y
 fi
 sudo apt-get update
-sudo apt-get install screen unzip wget -y
+sudo apt-get install screen unzip wget cron -y
 sudo apt-get install net-tools -y
 sudo apt-get install libcurl4 -y
 sudo apt-get install openssl -y
@@ -97,7 +97,7 @@ if [ -d "$ServerName" ]; then
   sudo sed -i "s:servername:$ServerName:g" /etc/init.d/$ServerName.service
   sed -i "/server-port=/c\server-port=$PortIPV4" server.properties
   sed -i "/server-portv6=/c\server-portv6=$PortIPV6" server.properties
-  sudo systemctl daemon-reload
+  update-rc.d $ServerName.service defaults
 
 
   if [ "$answer" != "${answer#[Yy]}" ]; then
@@ -221,8 +221,7 @@ sudo sed -i "s:dirname:$DirName:g" /etc/init.d/$ServerName.service
 sudo sed -i "s:servername:$ServerName:g" /etc/init.d/$ServerName.service
 sed -i "/server-port=/c\server-port=$PortIPV4" server.properties
 sed -i "/server-portv6=/c\server-portv6=$PortIPV6" server.properties
-sudo systemctl daemon-reload
-sudo systemctl enable $ServerName.service
+update-rc.d $ServerName.service defaults
 
   # Automatic reboot at 4am configuration
   TimeZone=$(cat /etc/timezone)
@@ -234,7 +233,7 @@ sudo systemctl enable $ServerName.service
 
 # Finished!
 echo "Setup is complete.  Starting Minecraft server..."
-sudo systemctl start $ServerName.service
+service $ServerName.service --full-restart
 
 # Wait up to 20 seconds for server to start
 StartChecks=0
