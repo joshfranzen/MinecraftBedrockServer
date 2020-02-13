@@ -9,24 +9,16 @@
 #
 # GitHub Repository: https://github.com/TheRemote/MinecraftBedrockServer
 
-echo "Minecraft Bedrock Server installation script by James Chambers - July 24th 2019"
-echo "Latest version always at https://github.com/TheRemote/MinecraftBedrockServer"
-echo "Don't forget to set up port forwarding on your router!  The default port is 19132"
 
-# Function to read input from user with a prompt
 ServerName=BDS
 PortIPV4=19132
 PortIPV6=19133
 answer=y
 
 
-# Install dependencies required to run Minecraft server in the background
-echo "Installing screen, unzip, sudo, net-tools, wget.."
-if [ ! -n "`which sudo`" ]; then
-  apt-get update && apt-get install sudo -y
-fi
+
 sudo apt-get update
-sudo apt-get install screen unzip wget cron -y
+sudo apt-get install screen unzip cron -y
 sudo apt-get install net-tools -y
 sudo apt-get install libcurl4 -y
 sudo apt-get install openssl -y
@@ -100,19 +92,6 @@ if [ -d "$ServerName" ]; then
   update-rc.d $ServerName.service defaults
 
 
-  if [ "$answer" != "${answer#[Yy]}" ]; then
-    sudo systemctl enable $ServerName.service
-
-    # Automatic reboot at 4am configuration
-    echo -n "Automatically restart and backup server at 4am daily (y/n)?"
-    read answer < /dev/tty
-    if [ "$answer" != "${answer#[Yy]}" ]; then
-      croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
-      cronjob="0 4 * * * $croncmd"
-      ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
-      echo "Daily restart scheduled.  To change time or remove automatic restart type crontab -e"
-    fi
-  fi
 
   # Setup completed
   echo "Setup is complete.  Starting Minecraft $ServerName server..."
