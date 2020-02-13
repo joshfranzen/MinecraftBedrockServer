@@ -209,26 +209,4 @@ croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
 cronjob="0 4 * * * $croncmd"
 crontab -l | { cat; echo "0 4 * * * $croncmd"; } | crontab -
 
-# Finished!
-echo "Setup is complete.  Starting Minecraft server..."
-service $ServerName.service --full-restart
-
-# Wait up to 20 seconds for server to start
-StartChecks=0
-while [ $StartChecks -lt 20 ]; do
-  if screen -list | grep -q "$ServerName"; then
-    break
-  fi
-  sleep 1;
-  StartChecks=$((StartChecks+1))
-done
-
-# Force quit if server is still open
-if ! screen -list | grep -q "$ServerName"; then
-  echo "Minecraft server failed to start after 20 seconds."
-else
-  echo "Minecraft server has started.  Type screen -r $ServerName to view the running server!"
-fi
-
-# Attach to screen
-screen -r $ServerName
+./bedrock_server
