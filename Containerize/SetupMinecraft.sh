@@ -17,6 +17,8 @@ echo "Don't forget to set up port forwarding on your router!  The default port i
 $ServerName = "BDS"
 $PortIPV4 = "19132"
 $PortIPV6 = "19133"
+$answer = "y"
+
 
 # Install dependencies required to run Minecraft server in the background
 echo "Installing screen, unzip, sudo, net-tools, wget.."
@@ -96,8 +98,8 @@ if [ -d "$ServerName" ]; then
   sed -i "/server-port=/c\server-port=$PortIPV4" server.properties
   sed -i "/server-portv6=/c\server-portv6=$PortIPV6" server.properties
   sudo systemctl daemon-reload
-  echo -n "Start Minecraft server at startup automatically (y/n)?"
-  read answer < /dev/tty
+
+
   if [ "$answer" != "${answer#[Yy]}" ]; then
     sudo systemctl enable $ServerName.service
 
