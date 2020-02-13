@@ -220,11 +220,7 @@ sudo sed -i "s:servername:$ServerName:g" /etc/systemd/system/$ServerName.service
 sed -i "/server-port=/c\server-port=$PortIPV4" server.properties
 sed -i "/server-portv6=/c\server-portv6=$PortIPV6" server.properties
 sudo systemctl daemon-reload
-
-echo -n "Start Minecraft server at startup automatically (y/n)?"
-read answer < /dev/tty
-if [ "$answer" != "${answer#[Yy]}" ]; then
-  sudo systemctl enable $ServerName.service
+sudo systemctl enable $ServerName.service
 
   # Automatic reboot at 4am configuration
   TimeZone=$(cat /etc/timezone)
