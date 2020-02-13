@@ -202,13 +202,12 @@ sed -i "/server-port=/c\server-port=$PortIPV4" server.properties
 sed -i "/server-portv6=/c\server-portv6=$PortIPV6" server.properties
 update-rc.d $ServerName.service defaults
 
-  # Automatic reboot at 4am configuration
-  TimeZone=$(cat /etc/timezone)
-  CurrentTime=$(date)
-  croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
-  cronjob="0 4 * * * $croncmd"
-  ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
-
+# Automatic reboot at 4am configuration
+TimeZone=$(cat /etc/timezone)
+CurrentTime=$(date)
+croncmd="$DirName/minecraftbe/$ServerName/restart.sh"
+cronjob="0 4 * * * $croncmd"
+crontab -l | { cat; echo "0 4 * * * $croncmd"; } | crontab -
 
 # Finished!
 echo "Setup is complete.  Starting Minecraft server..."
